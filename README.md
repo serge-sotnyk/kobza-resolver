@@ -18,4 +18,4 @@ After some experiments, the [pure-HTML version](kobza-solver.html) of this utili
 useful.
 
 To open it in the browser, use the following link:
-https://rawcdn.githack.com/serge-sotnyk/kobza-resolver/6babff6676db050de4c79b9528df9a104b8469cb/kobza-solver.html
+https://raw.githack.com/serge-sotnyk/kobza-resolver/main/kobza-solver.html
