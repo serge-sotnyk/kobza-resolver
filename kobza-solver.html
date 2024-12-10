@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kobza Solver</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        label {
+            display: block;
+            margin-top: 10px;
+        }
+        input, button {
+            margin-top: 5px;
+        }
+        #results {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Kobza Solver</h1>
+    <label for="impossible">Impossible Letters:</label>
+    <input type="text" id="impossible" placeholder="Enter letters that cannot appear">
+
+    <label for="existing">Existing Letters:</label>
+    <input type="text" id="existing" placeholder="Enter letters that must appear">
+
+    <label for="pattern">Pattern:</label>
+    <input type="text" id="pattern" placeholder="Enter regex pattern (e.g., ...но)" value=".....">
+
+    <button onclick="solveKobza()">Solve</button>
+
+    <div id="results">
+        <h2>Results:</h2>
+        <ul id="result-list"></ul>
+    </div>
+
+    <script>
+        function solveKobza() {
+            const impossibleLetters = document.getElementById('impossible').value;
+            const existingLetters = document.getElementById('existing').value;
+            const pattern = document.getElementById('pattern').value;
+
+            const dictionaryText = `
+абайя
+абвер
+абзац
+абиде
+слово1
+слово2
+слово3
+словоn
+            `;
+
+            const dictionary = dictionaryText.split(/\r?\n/).map(word => word.trim()).filter(word => word);
+
+            const impossibleSet = new Set(impossibleLetters);
+            const existingSet = new Set(existingLetters);
+
+            const conflictLetters = [...impossibleSet].filter(letter => existingSet.has(letter) || pattern.includes(letter));
+            if (conflictLetters.length > 0) {
+                alert(`Error: Impossible letters conflict with existing letters or pattern: ${conflictLetters.join('')}`);
+                return;
+            }
+
+            const regex = new RegExp(`^${pattern}$`);
+            const results = dictionary.filter(word => {
+                if ([...impossibleSet].some(letter => word.includes(letter))) return false;
+                if (![...existingSet].every(letter => word.includes(letter))) return false;
+                return regex.test(word);
+            });
+
+            const resultList = document.getElementById('result-list');
+            resultList.innerHTML = '';
+
+            results.sort().forEach(word => {
+                const li = document.createElement('li');
+                li.textContent = word;
+                resultList.appendChild(li);
+            });
+
+            alert(`Found ${results.length} words`);
+        }
+    </script>
+</body>
+</html>

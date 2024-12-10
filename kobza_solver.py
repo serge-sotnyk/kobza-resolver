@@ -6,12 +6,19 @@ import re
 def solve_kobza(impossible_letters, existing_letters, pattern):
     """
     Solve the Kobza game by filtering words based on given constraints.
-    
+
     :param impossible_letters: Letters that cannot be in the word
     :param existing_letters: Letters that must be in the word
     :param pattern: Regex pattern to match the word structure
     :return: List of matching words
     """
+    # Check for conflicts between impossible letters and other constraints
+    conflict_letters = set(impossible_letters) & (set(existing_letters) | set(pattern))
+    if conflict_letters:
+        print(
+            f"Error: Impossible letters conflict with existing letters or pattern: {''.join(conflict_letters)}")
+        return []
+
     # Read dictionary
     dictionary_path = "kobza_filtered_dict_words.txt"
     try:
