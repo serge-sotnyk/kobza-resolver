@@ -31,7 +31,7 @@ class KobzaSolverApp(App):
         border: tall $background-lighten-2;
         padding: 1;
         margin-top: 2;
-        overflow-y: auto;
+        overflow-y: scroll;  /* Explicitly set scrollable */
     }
     
     Button {
@@ -55,11 +55,13 @@ class KobzaSolverApp(App):
             yield Input(placeholder="Enter letters that must be present", id="possible-letters")
             
             yield Static("Pattern (use . for unknown letters)", classes="input-label")
-            yield Input(placeholder="Enter pattern (e.g., ...но)", id="pattern")
+            yield Input(placeholder="Enter pattern (e.g., ...но)", id="pattern", value=".....")
             
             yield Button("Find Words", variant="primary", id="search-button")
             
-            yield Static(id="results-container")
+            yield ScrollableContainer(
+                Static(id="results-container")
+            )
         
         yield Footer()
 
@@ -82,6 +84,12 @@ class KobzaSolverApp(App):
         if not all([impossible_letters, possible_letters, pattern]):
             results_container.update("Please fill in all fields.")
             return
+        
+        # Check that impossible letters are not in possible letters or pattern
+        for letter in impossible_letters:
+            if letter in possible_letters or letter in pattern.replace('.', ''):
+                results_container.update(f"Error: Impossible letter '{letter}' found in possible letters or pattern.")
+                return
         
         # Search logic
         found = []
@@ -113,3 +121,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+    
