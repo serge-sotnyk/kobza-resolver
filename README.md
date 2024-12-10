@@ -1,4 +1,4 @@
-# kobza-resolver
+# Kobza resolver
 Utilities for resolving the kobza-app: https://kobzaapp.github.io/
 
 This game is an analog of the known English game Wordly:
