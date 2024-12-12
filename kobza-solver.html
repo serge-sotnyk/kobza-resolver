@@ -177,6 +177,7 @@
             try {
                 const response = await fetch('kobza_filtered_dict_words.txt');
                 dictionaryText = await response.text();
+                dictionaryText = dictionaryText.toLowerCase(); // Convert dictionary to lowercase
             } catch (error) {
                 console.error('Error loading dictionary:', error);
                 alert('Failed to load dictionary. Please check the file path.');
@@ -190,9 +191,9 @@
                 return;
             }
 
-            const impossibleLetters = document.getElementById('impossible').value;
-            const existingLetters = document.getElementById('existing').value;
-            const pattern = document.getElementById('pattern').value;
+            const impossibleLetters = document.getElementById('impossible').value.toLowerCase();
+            const existingLetters = document.getElementById('existing').value.toLowerCase();
+            const pattern = document.getElementById('pattern').value.toLowerCase();
 
             const dictionary = dictionaryText.split(/\r?\n/).map(word => word.trim()).filter(word => word);
 
